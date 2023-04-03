@@ -1,43 +1,22 @@
 import mongoose from 'mongoose'
 
-const VideoSchema = new mongoose.Schema({
+const CommentSchema = new mongoose.Schema({
        userId:{
          type:String,
          required:true,
        },
-       title:{
+       videoId:{
         type:String,
         required:true,
-      },
+       },
        desc:{
         type:String,
         required:true,
-      },
-      imgUrl:{
-        type:String,
-        required:true,
-      },
-      videoUrl:{
-        type:String,
-        required:true,
-      },
-      views:{
-        type:Number,
-        default:0
-      },
-      tags:{
-        type:[String],
-      },
-      likes:{
-        type:[String],
-      },
-      dislikes:{
-        type:[String],
-      },
+       },
    },
    {
      timestamps:true
    }
 )
 
-export default mongoose.model("Video",VideoSchema)
+export default mongoose.model("Comment",CommentSchema)
