@@ -17,6 +17,8 @@ import FlagRoundedIcon from '@mui/icons-material/FlagRounded';
 import HelpOutlineRoundedIcon from '@mui/icons-material/HelpOutlineRounded';
 import SettingsBrightnessIcon from '@mui/icons-material/SettingsBrightness';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+
 
 const Container = styled.div`
   flex:1;
@@ -26,7 +28,7 @@ const Container = styled.div`
   font-size:14px;
   position:sticky;
   top:0;
-  overflow: scroll;
+  // overflow: scroll;
   `
 
 const Wrapper = styled.div`
@@ -80,6 +82,9 @@ const Title = styled.h2`
 `
 
 const Menu = ({darkMode,setDarkMode}) => {
+
+  const {currentUser} = useSelector(state=>state.user)
+
   return (
      <Container>
         <Wrapper>
@@ -96,17 +101,19 @@ const Menu = ({darkMode,setDarkMode}) => {
               Home
             </Item>
         </Link>
-
+        <Link to="trends" style={{textDecoration:'none',color:"inherit"}}>
              <Item>
               <ExploreRoundedIcon/>
                Explore
              </Item>
+        </Link>
+        <Link to="subscriptions" style={{textDecoration:'none',color:"inherit"}}>
              <Item>
               <SubscriptionsRoundedIcon/>
               Subscribtions
              </Item>
-
-              <Hr/>
+         </Link>
+          <Hr/>
 
              <Item>
               <LibraryAddRoundedIcon/>
@@ -118,15 +125,19 @@ const Menu = ({darkMode,setDarkMode}) => {
              </Item>
 
              <Hr/>
-             <Login>
-                Sign in to like videos,comment and subscribe
-             </Login>
-               <Link to="signin" style={{textDecoration:"none"}}>
-                <Button>
-                  SIGN IN
-                </Button>
-               </Link>
-             <Hr/>
+                { !currentUser &&
+                 <>
+                  <Login>
+                        Sign in to like videos,comment and subscribe
+                    </Login>
+                      <Link to="signin" style={{textDecoration:"none"}}>
+                        <Button>
+                          SIGN IN
+                        </Button>
+                      </Link>
+                    <Hr/>
+                  </>
+                } 
               <Title>
                  Best of ZhilePlay
               </Title>
