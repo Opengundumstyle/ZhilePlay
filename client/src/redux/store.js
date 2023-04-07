@@ -14,8 +14,6 @@ import {
 } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 
-
-
 const persistConfig = {
   key: 'root',
   version: 1,
@@ -24,7 +22,7 @@ const persistConfig = {
 
 const rootReducer = combineReducers({
     user: userReducer,
-    video:videoReducer
+    video:videoReducer,
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)

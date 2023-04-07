@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import styled from 'styled-components'
 
-
+import { useState } from 'react'
+import axios from 'axios'
 
 const Container = styled.div`
    display:flex;
@@ -37,25 +38,30 @@ const Text = styled.span`
   font-size:13px;
   `
 
+const Comment = ({comment}) => {
 
+  const [channel,setChannel] = useState({})
 
+  useEffect(()=>{
+  
+       const fetchComment = async()=>{
+        const res = await axios.get(
+          `/users/find/${comment.userId}`
+        )
+        setChannel(res.data)
+       }
+       
+      fetchComment()
 
+  },[comment.userId])
 
-const Comment = () => {
   return (
     <Container>
-        <Avatar src="https://pbs.twimg.com/media/FS7LmWUUsAE642E.jpg"/>
+        <Avatar src={channel.img}/>
         <Details>
-            <Name>Momo<Date>1 day</Date></Name>
+            <Name>{channel.name}<Date>1 day</Date></Name>
             <Text>
-                君と離れてしまってから
-                星の数ほどいろんな相手とつきあったりいろいろしたけど
-                君を超える相手なんていなかった
-                君のことしか考えられなかった
-
-                君への初恋が唯一ですべてだった
-                馬鹿げてるかもしれないけど
-                君への初恋が僕のすべてだった
+               {comment.desc}
             </Text>
         </Details>
     </Container>

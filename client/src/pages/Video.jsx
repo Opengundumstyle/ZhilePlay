@@ -5,14 +5,17 @@ import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt';
 import ShareIcon from '@mui/icons-material/Share';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import Comments from '../components/Comments';
-import Card from '../components/Card';
+import ThumbUpIcon from '@mui/icons-material/ThumbUp';
+import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt';
+import Recommendation from '../components/Recommendation';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux'
 import { useLocation } from 'react-router-dom';
-import {fetchSuccess} from '../redux/videoSlice';
-
+import { fetchSuccess,like,dislike } from '../redux/videoSlice';
+import { subscription } from '../redux/userSlice';
 import axios from 'axios';
 import { format } from 'timeago.js';
+
 
 const Container = styled.div`
       display:flex;
@@ -64,8 +67,6 @@ const Hr = styled.hr`
 
 `
 
-const Recommendation = styled.div`
-    flex:2;`
 
 
 const Channel = styled.div`
@@ -116,6 +117,11 @@ const ChannelDescribtion = styled.p`
   font-size:14px;
   `
 
+const VideoFrame = styled.video`
+  max-height:720px;
+  width:100%;
+  object-fit:cover;`
+
 const Video = () => {
 
   const {currentUser} = useSelector(state=>state.user)
@@ -124,9 +130,24 @@ const Video = () => {
 
   const path = useLocation().pathname.split('/')[2]
 
-  console.log('path',path)
-
   const [channel,setChannel] = useState({})
+
+  const handlelike = async()=>{
+       await axios.put(`/users/like/${currentVideo._id}`)
+       dispatch(like(currentUser._id))
+  }
+
+  const handleDislike = async()=>{
+      await axios.put(`/users/dislike/${currentVideo._id}`)
+      dispatch(dislike(currentUser._id))
+  }
+
+  const handleSub = async()=>{
+     currentUser.subscribedUsers.includes(channel._id)?
+     await axios.put(`/users/unsub/${channel._id}`):
+     await axios.put(`/users/sub/${channel._id}`)
+     dispatch(subscription(channel._id))
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -135,12 +156,8 @@ const Video = () => {
            const videoRes = await axios.get(`/videos/find/${path}`)
            const channelRes = await axios.get(`/users/find/${videoRes.data.userId}`)
 
-           console.log(videoRes)
-           console.log(channelRes)
            setChannel(channelRes.data)
            dispatch(fetchSuccess(videoRes.data))
-          
-         
 
       } catch (error) {
         console.error(error);
@@ -154,19 +171,21 @@ const Video = () => {
     <Container>
          <Content>
              <VideoWrapper>
-             <iframe width="100%" height="450" src="https://www.youtube.com/embed/uhA55hYnoHw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                <VideoFrame src={currentVideo.videoUrl} controls/>
              </VideoWrapper>
               <Title>
                 {currentVideo.title}
               </Title>
               <Details>
-                  <Info>{currentVideo.views} . {format(currentVideo.createdAt)}</Info>
+                  <Info>{currentVideo.views} views. {format(currentVideo.createdAt)}</Info>
                   <Buttons>
-                      <Button>
-                          <ThumbUpOffAltIcon/>{currentVideo.likes?.length}
+                      <Button onClick={handlelike}>
+                         { currentVideo.likes?.includes(currentUser._id)?
+                           <ThumbUpIcon/>:<ThumbUpOffAltIcon/>}{currentVideo.likes?.length}
+                         
                       </Button>
-                      <Button>
-                         <ThumbDownOffAltIcon/>{currentVideo.dislikes?.length}
+                      <Button onClick={handleDislike}>
+                         {currentVideo.dislikes?.includes(currentUser._id)?<ThumbDownAltIcon/>:<ThumbDownOffAltIcon/>}{currentVideo.dislikes?.length}
                       </Button>
                       <Button>
                          <ShareIcon/>
@@ -190,33 +209,15 @@ const Video = () => {
                           </ChannelDescribtion>
                        </ChannelDetails>
                   </ChannelInfo>
-                  <Subscribtions>
-                       Subscribe
+                  <Subscribtions onClick={handleSub}>
+                       {currentUser.subscribedUsers?.includes(channel._id)?"SUBSCRIBED":"SUBSCRIBE"}
                   </Subscribtions>
               </Channel>
               <Hr/>
-              <Comments/>
+              <Comments videoId={currentVideo._id}/>
          </Content>
-         {/* <Recommendation>
-              <Card type="sm"/>
-              <Card type="sm"/>
-              <Card type="sm"/>
-              <Card type="sm"/>
-              <Card type="sm"/>
-              <Card type="sm"/>
-              <Card type="sm"/>
-              <Card type="sm"/>
-              <Card type="sm"/>
-              <Card type="sm"/>
-              <Card type="sm"/>
-              <Card type="sm"/>
-              <Card type="sm"/>
-              <Card type="sm"/>
-              <Card type="sm"/>
-              <Card type="sm"/>
-              <Card type="sm"/>
-              <Card type="sm"/>
-         </Recommendation> */}
+        <Recommendation tags={currentVideo.tags}/>
+        
     </Container>
   )
 }
