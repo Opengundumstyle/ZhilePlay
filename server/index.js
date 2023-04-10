@@ -7,14 +7,21 @@ import userRoutes from './routes/users.js'
 import videoRoutes from './routes/videos.js'
 import commentRoutes from './routes/comments.js'
 import cookieParser from 'cookie-parser'
+import * as path from 'path';
 
 const app = express()
+
 dotenv.config()
+
+app.use(express.static('frontend/build'));
+app.get('/', (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'));
+})
+
 
 const connect= () =>{
      mongoose.connect(process.env.MONGODB_API_KEY).then(()=>{
            console.log("Connected to DB")}).catch((err)=>{ throw err})
-   
 }
 
 app.use(cookieParser())
