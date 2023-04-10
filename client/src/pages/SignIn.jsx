@@ -6,6 +6,7 @@ import { useDispatch } from 'react-redux'
 import { loginFailure, loginStart, loginSuccess } from '../redux/userSlice'
 import {auth,provider} from '../firebase'
 import {signInWithPopup} from 'firebase/auth'
+import { useNavigate } from 'react-router-dom'
 
 const Contariner = styled.div`
    display:flex;
@@ -73,6 +74,7 @@ const SignIn = () => {
   const [name,setName] = useState("")
   const [email,setEmail] = useState("")
   const [password,setPassword] = useState("")
+  const navigate  = useNavigate()
   const dispatch = useDispatch()
 
   const handleLogin = async (e)=>{
@@ -87,8 +89,8 @@ const SignIn = () => {
        
             dispatch(loginSuccess(res.data))
        
-     }catch(err){
-        dispatch(loginFailure())
+      }catch(err){
+            dispatch(loginFailure())
      }
      
   }
@@ -123,7 +125,7 @@ const handleSignUp =async(e)=>{
 
        dispatch(loginSuccess(res.data))
 
-       
+       navigate('/')
 
     }catch(error){
        dispatch(loginFailure())

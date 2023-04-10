@@ -10,7 +10,7 @@ import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt';
 import Recommendation from '../components/Recommendation';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux'
-import { useLocation } from 'react-router-dom';
+import { useLocation,useNavigate } from 'react-router-dom';
 import { fetchSuccess,like,dislike, fetchComments } from '../redux/videoSlice';
 import { subscription } from '../redux/userSlice';
 import axios from 'axios';
@@ -126,7 +126,9 @@ const Video = () => {
 
   const {currentUser} = useSelector(state=>state.user)
   const {currentVideo} = useSelector(state=>state.video)
-  
+
+  const navigate = useNavigate();
+
   const dispatch = useDispatch()
   
   const path = useLocation().pathname.split('/')[2]
@@ -134,21 +136,34 @@ const Video = () => {
   const [channel,setChannel] = useState({})
 
   const handlelike = async()=>{
-       
-       await axios.put(`/users/like/${currentVideo._id}`)
-       dispatch(like(currentUser._id))
+       if(currentUser){
+        await axios.put(`/users/like/${currentVideo._id}`)
+        dispatch(like(currentUser._id))
+       }else{
+         navigate('/signin')
+       }
   }
 
   const handleDislike = async()=>{
+      if(currentUser){
       await axios.put(`/users/dislike/${currentVideo._id}`)
       dispatch(dislike(currentUser._id))
+      }else{
+        navigate('/signin')
+     }
   }
 
   const handleSub = async()=>{
+      
+    if(currentUser){
      currentUser.subscribedUsers.includes(channel._id)?
      await axios.put(`/users/unsub/${channel._id}`):
      await axios.put(`/users/sub/${channel._id}`)
      dispatch(subscription(channel._id))
+    }else{
+       navigate('/signin')
+    }
+
   }
  
   // fetching videos and comments
