@@ -28,7 +28,7 @@ const Container = styled.div`
   font-size:14px;
   position:sticky;
   top:0;
-  // overflow: scroll;
+  overflow: scroll;
   `
 
 const Wrapper = styled.div`

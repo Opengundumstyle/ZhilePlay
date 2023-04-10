@@ -84,9 +84,8 @@ const SignIn = () => {
      try{
 
         const res = await axios.post("/auth/signin",{name,password})
-        
-        console.log('before dispatch',res.data)
-        dispatch(loginSuccess(res.data)).then(()=>console.log("dispatch success",res.data) )
+       
+            dispatch(loginSuccess(res.data))
        
      }catch(err){
         dispatch(loginFailure())
@@ -111,12 +110,26 @@ const SignIn = () => {
               dispatch(loginSuccess(res.data))
            })
      }).catch((error)=>{
-             
             dispatch(loginFailure(error))
 
      })
      
   }
+
+const handleSignUp =async(e)=>{
+    e.preventDefault()
+    try{
+       const res = await axios.post("/auth/signup",{name,password,email})
+
+       dispatch(loginSuccess(res.data))
+
+       
+
+    }catch(error){
+       dispatch(loginFailure())
+    }
+}
+
 
   return (
      <Contariner>
@@ -138,7 +151,7 @@ const SignIn = () => {
                <Input placeholder='username' onChange={e=>setName(e.target.value)}/>
                <Input  placeholder='email'onChange={e=>setEmail(e.target.value)}/>
                <Input type="password" placeholder='password' onChange={e=>setPassword(e.target.value)}/>
-               <Button>
+               <Button onClick={handleSignUp}>
                     Sign Up 
                </Button>
           </Wrapper>

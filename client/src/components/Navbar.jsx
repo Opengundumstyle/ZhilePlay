@@ -8,6 +8,8 @@ import { useSelector } from 'react-redux';
 import VideoCallOutlinedIcon from '@mui/icons-material/VideoCallOutlined';
 import { useState } from 'react';
 import Upload from './Upload';
+import UserSession from './UserSession';
+import { useDetectOutsideClick } from '../utils/useDetectOutsideClick'
 
 const Container = styled.div`
     position:sticky;
@@ -24,7 +26,7 @@ const Wrapper = styled.div`
     padding:0px 20px; 
     position:relative;
 `
-const Search = styled.div`
+const Search = styled.form`
     width:40%;
     position:absolute;
     left:0px;
@@ -75,28 +77,44 @@ const Avatar = styled.img`
 `
 
 
+const UserUtils = styled.div`
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    `
+
 const Navbar = () => {
   const navigate  = useNavigate()
   const {currentUser} = useSelector(state=>state.user)
   const [open,setOpen] = useState(false)
-  const [q,setQ] = useState("")
-
+  const [logout,setLogOut] = useState(false)
+  const [q,setQ] = useState("") 
+  
   
   
   return (
     <>
       <Container>
           <Wrapper>
-              <Search>
+              <Search onSubmit={(e)=> { 
+                     e.preventDefault()
+                     if(!q) return
+                     navigate(`/search?q=${q}`)}}>
                  <Input placeholder='Search' onChange={(e)=>setQ(e.target.value)}/>
                  <SearchOutlinedIcon onClick={()=>navigate(`/search?q=${q}`)}/>
               </Search>
-            { currentUser? 
+            { currentUser ? 
+               <>
+               <UserUtils>
                 <User>
                     <VideoCallOutlinedIcon onClick={()=>setOpen(true)}/>
-                    <Avatar src={currentUser.img}/>
+                    <Avatar src={currentUser.img} onClick={()=>setLogOut(!logout)}/>
                     {currentUser.name}
-                </User> : 
+                </User>
+                {logout?<UserSession/>:''}
+                </UserUtils>
+                </> 
+                : 
                 <Link to="signin" style={{textDecoration:"none"}}>
                 <Button>
                     <AccountCircleOutlinedIcon />

@@ -11,7 +11,7 @@ import Recommendation from '../components/Recommendation';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux'
 import { useLocation } from 'react-router-dom';
-import { fetchSuccess,like,dislike } from '../redux/videoSlice';
+import { fetchSuccess,like,dislike, fetchComments } from '../redux/videoSlice';
 import { subscription } from '../redux/userSlice';
 import axios from 'axios';
 import { format } from 'timeago.js';
@@ -126,13 +126,15 @@ const Video = () => {
 
   const {currentUser} = useSelector(state=>state.user)
   const {currentVideo} = useSelector(state=>state.video)
+  
   const dispatch = useDispatch()
-
+  
   const path = useLocation().pathname.split('/')[2]
 
   const [channel,setChannel] = useState({})
 
   const handlelike = async()=>{
+       
        await axios.put(`/users/like/${currentVideo._id}`)
        dispatch(like(currentUser._id))
   }
@@ -148,30 +150,52 @@ const Video = () => {
      await axios.put(`/users/sub/${channel._id}`)
      dispatch(subscription(channel._id))
   }
-
+ 
+  // fetching videos and comments
   useEffect(() => {
+
     const fetchData = async () => {
       try {
+        const videoRes = await axios.get(`/videos/find/${path}`);
+        const channelRes = await axios.get(
+          `/users/find/${videoRes.data.userId}`
+        );
 
-           const videoRes = await axios.get(`/videos/find/${path}`)
-           const channelRes = await axios.get(`/users/find/${videoRes.data.userId}`)
+        setChannel(channelRes.data);
 
-           setChannel(channelRes.data)
-           dispatch(fetchSuccess(videoRes.data))
+        dispatch(fetchSuccess(videoRes.data));
 
-      } catch (error) {
-        console.error(error);
-      }
+      } catch (err) {}
     };
 
     fetchData();
-  }, [path,dispatch]);
+
+
+    const getComments = async()=>{
+
+      try{
+          const res = await axios.get(`/comments/${currentVideo._id}`)
+
+          dispatch(fetchComments(res.data))
+          
+      }catch(err){
+
+          console.log(err)
+
+        }
+      }
+      getComments()
+   }
+  , 
+  [path, dispatch,currentVideo._id]
+  
+  );
 
   return (
     <Container>
          <Content>
              <VideoWrapper>
-                <VideoFrame src={currentVideo.videoUrl} controls/>
+                <VideoFrame src={currentVideo.videoUrl} controls autoPlay/>
              </VideoWrapper>
               <Title>
                 {currentVideo.title}
@@ -180,12 +204,11 @@ const Video = () => {
                   <Info>{currentVideo.views} views. {format(currentVideo.createdAt)}</Info>
                   <Buttons>
                       <Button onClick={handlelike}>
-                         { currentVideo.likes?.includes(currentUser._id)?
+                         {currentUser && currentVideo.likes?.includes(currentUser._id)?
                            <ThumbUpIcon/>:<ThumbUpOffAltIcon/>}{currentVideo.likes?.length}
-                         
                       </Button>
                       <Button onClick={handleDislike}>
-                         {currentVideo.dislikes?.includes(currentUser._id)?<ThumbDownAltIcon/>:<ThumbDownOffAltIcon/>}{currentVideo.dislikes?.length}
+                         {currentUser && currentVideo.dislikes?.includes(currentUser._id)?<ThumbDownAltIcon/>:<ThumbDownOffAltIcon/>}{currentVideo.dislikes?.length}
                       </Button>
                       <Button>
                          <ShareIcon/>
@@ -210,14 +233,14 @@ const Video = () => {
                        </ChannelDetails>
                   </ChannelInfo>
                   <Subscribtions onClick={handleSub}>
-                       {currentUser.subscribedUsers?.includes(channel._id)?"SUBSCRIBED":"SUBSCRIBE"}
+                       {currentUser && currentUser.subscribedUsers?.includes(channel._id)?"SUBSCRIBED":"SUBSCRIBE"}
                   </Subscribtions>
               </Channel>
               <Hr/>
               <Comments videoId={currentVideo._id}/>
          </Content>
         <Recommendation tags={currentVideo.tags}/>
-        
+     
     </Container>
   )
 }

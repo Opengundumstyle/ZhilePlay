@@ -6,6 +6,10 @@ import { useState,useEffect } from 'react'
 const Container = styled.div`
     flex:2;`
 
+const Header = styled.div`
+    padding-bottom:5px;
+    font-weight:bold;
+`
 
 const Recommendation = ({tags}) => {
 
@@ -22,6 +26,7 @@ const Recommendation = ({tags}) => {
 
   return (
    <Container>
+       <Header>You may also like:</Header>
        {videos.map(video=>(
          <Card type="sm" key={video._id} video={video}/>
        ))}
