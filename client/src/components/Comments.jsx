@@ -41,7 +41,7 @@ const Comments = ({videoId}) => {
         e.preventDefault()
         if(!newComment)return
         try{
-             await axios.post(`/comments`,{desc:newComment,userId:currentUser._id,videoId})
+             await axios.post(`api/comments`,{desc:newComment,userId:currentUser._id,videoId})
              dispatch(addComment({
                            desc:newComment,
                            userId:currentUser._id
@@ -56,7 +56,7 @@ const Comments = ({videoId}) => {
   return (
   <Container>
       <NewComment onSubmit={handleSubmit}>
-        
+
         {currentUser?
          <Avatar src={currentUser.img}/>:<AccountCircleIcon sx={{ fontSize: 55}} color="disabled"/>}
         {currentUser?  <Input placeholder='Add a comment...' value={newComment} onChange={(e)=>setNewComment(e.target.value)}/>: <Input placeholder='sign in to add comment'/>}

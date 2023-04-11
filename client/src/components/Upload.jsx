@@ -138,7 +138,7 @@ uploadTask.on(
 
 const handleUpload = async (e)=>{
    e.preventDefault();
-   const res  = await axios.post("/videos",{ ...inputs,tags })
+   const res  = await axios.post("api/videos",{ ...inputs,tags })
    setOpen(false)
    res.status === 200 && navigate(`/video/${res.data._id}`)
 }
