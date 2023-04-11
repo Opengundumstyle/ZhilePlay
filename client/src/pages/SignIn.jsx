@@ -85,7 +85,7 @@ const SignIn = () => {
    
      try{
 
-        const res = await axios.post("api/auth/signin",{name,password})
+        const res = await axios.post("/auth/signin",{name,password})
        
             dispatch(loginSuccess(res.data))
        
@@ -101,7 +101,7 @@ const SignIn = () => {
 
      signInWithPopup(auth,provider).then((result)=>{
               
-              axios.post("api/auth/google",{
+              axios.post("/auth/google",{
 
               name:result.user.displayName,
               email:result.user.email,
@@ -121,7 +121,7 @@ const SignIn = () => {
 const handleSignUp =async(e)=>{
     e.preventDefault()
     try{
-       const res = await axios.post("api/auth/signup",{name,password,email})
+       const res = await axios.post("/auth/signup",{name,password,email})
 
        dispatch(loginSuccess(res.data))
 

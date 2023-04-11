@@ -127,9 +127,6 @@ const Video = () => {
   const {currentUser} = useSelector(state=>state.user)
   const {currentVideo} = useSelector(state=>state.video)
 
-  console.log('what is currentVideo',currentVideo)
-
- 
 
   const navigate = useNavigate();
 
@@ -137,11 +134,15 @@ const Video = () => {
   
   const path = useLocation().pathname.split('/')[2]
 
+  console.log('what is currentVideoId',currentVideo?._id)
+  console.log('what is path',path)
+  console.log('currentVideo???',currentVideo)
+
   const [channel,setChannel] = useState({})
 
   const handlelike = async()=>{
        if(currentUser){
-        await axios.put(`api/users/like/${currentVideo._id}`)
+        await axios.put(`/users/like/${path}`)
         dispatch(like(currentUser._id))
        }else{
          navigate('/signin')
@@ -150,7 +151,7 @@ const Video = () => {
 
   const handleDislike = async()=>{
       if(currentUser){
-      await axios.put(`api/users/dislike/${currentVideo._id}`)
+      await axios.put(`/users/dislike/${path}`)
       dispatch(dislike(currentUser._id))
       }else{
         navigate('/signin')
@@ -161,8 +162,8 @@ const Video = () => {
       
     if(currentUser){
      currentUser.subscribedUsers.includes(channel._id)?
-     await axios.put(`api/users/unsub/${channel._id}`):
-     await axios.put(`api/users/sub/${channel._id}`)
+     await axios.put(`/users/unsub/${channel._id}`):
+     await axios.put(`/users/sub/${channel._id}`)
      dispatch(subscription(channel._id))
     }else{
        navigate('/signin')
@@ -172,12 +173,12 @@ const Video = () => {
  
   // fetching videos and comments
   useEffect(() => {
-
+    console.log("useEffect called");
     const fetchData = async () => {
       try {
-        const videoRes = await axios.get(`api/videos/find/${path}`);
+        const videoRes = await axios.get(`/videos/find/${path}`);
         const channelRes = await axios.get(
-          `api/users/find/${videoRes.data.userId}`
+          `/users/find/${videoRes.data.userId}`
         );
 
         console.log('do i have videoRes',videoRes)
@@ -186,16 +187,19 @@ const Video = () => {
    
         dispatch(fetchSuccess(videoRes.data));
 
-      } catch (err) {}
+      } catch (err) {
+          console.log('this is the catch err',err)
+      }
     };
 
     fetchData();
-
+    
+    console.log('fetchData called');
 
     const getComments = async()=>{
 
       try{
-          const res = await axios.get(`api/comments/${path}`)
+          const res = await axios.get(`/comments/${path}`)
 
           dispatch(fetchComments(res.data))
           
@@ -218,14 +222,18 @@ const Video = () => {
     <Container>
          <Content>
              <VideoWrapper>
-                <VideoFrame src={currentVideo.videoUrl} controls autoPlay/>
+                {currentVideo?
+                <VideoFrame src={currentVideo.videoUrl} controls autoPlay/>:  <div>Loading video...</div> }
              </VideoWrapper>
               <Title>
-                {currentVideo.title}
+                  {currentVideo ? currentVideo.title:''}
               </Title>
               <Details>
-                  <Info>{currentVideo.views} views. {format(currentVideo.createdAt)}</Info>
+                  <Info>{currentVideo?currentVideo.views:''} views. {currentVideo?format(currentVideo.createdAt):''}</Info>
+                  
                   <Buttons>
+                    { currentVideo?
+                      <>
                       <Button onClick={handlelike}>
                          {currentUser && currentVideo.likes?.includes(currentUser._id)?
                            <ThumbUpIcon/>:<ThumbUpOffAltIcon/>}{currentVideo.likes?.length}
@@ -233,6 +241,8 @@ const Video = () => {
                       <Button onClick={handleDislike}>
                          {currentUser && currentVideo.dislikes?.includes(currentUser._id)?<ThumbDownAltIcon/>:<ThumbDownOffAltIcon/>}{currentVideo.dislikes?.length}
                       </Button>
+                      </> : ''
+                    }
                       <Button>
                          <ShareIcon/>
                          Share
@@ -251,7 +261,7 @@ const Video = () => {
                           <ChannelName>{channel.name}</ChannelName>
                           <ChannelCounter>{channel.subscribers} Subscribers</ChannelCounter>
                           <ChannelDescribtion>
-                              {currentVideo.desc}
+                              {currentVideo?currentVideo.desc:''}
                           </ChannelDescribtion>
                        </ChannelDetails>
                   </ChannelInfo>
@@ -260,9 +270,10 @@ const Video = () => {
                   </Subscribtions>
               </Channel>
               <Hr/>
-              <Comments videoId={currentVideo._id}/>
+              <Comments videoId={path}/>
          </Content>
-        <Recommendation tags={currentVideo.tags}/>
+         {currentVideo? <Recommendation tags={currentVideo.tags}/> : ''}
+        
      
     </Container>
   )
