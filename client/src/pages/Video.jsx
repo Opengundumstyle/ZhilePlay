@@ -129,7 +129,7 @@ const Video = () => {
 
   console.log('what is currentVideo',currentVideo)
 
-  const videoId = currentVideo?._id? currentVideo._id : null
+ 
 
   const navigate = useNavigate();
 
@@ -179,7 +179,7 @@ const Video = () => {
         const channelRes = await axios.get(
           `api/users/find/${videoRes.data.userId}`
         );
-        
+
         console.log('do i have videoRes',videoRes)
 
         setChannel(channelRes.data);
@@ -195,7 +195,7 @@ const Video = () => {
     const getComments = async()=>{
 
       try{
-          const res = await axios.get(`api/comments/${currentVideo._id}`)
+          const res = await axios.get(`api/comments/${path}`)
 
           dispatch(fetchComments(res.data))
           
@@ -208,7 +208,7 @@ const Video = () => {
       getComments()
    }
   , 
-  [path, dispatch,videoId]
+  [path, dispatch]
   
   );
 
