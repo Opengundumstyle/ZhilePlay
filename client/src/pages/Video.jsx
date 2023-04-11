@@ -177,7 +177,7 @@ const Video = () => {
     const fetchData = async () => {
       try {
         // fetch video info
-        const videoRes = await axios.get(`/api/videos/find/${path}`);
+        const videoRes = await axios.get(`/api/videos/find/${path}?${Math.random()}`);
         dispatch(fetchSuccess(videoRes.data));
 
         // fetch channel info
