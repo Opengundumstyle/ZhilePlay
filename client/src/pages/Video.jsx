@@ -173,7 +173,7 @@ const Video = () => {
       try {
         const videoRes = await axios.get(`api/videos/find/${path}`);
         const channelRes = await axios.get(
-          `/users/find/${videoRes.data.userId}`
+          `api/users/find/${videoRes.data.userId}`
         );
 
         setChannel(channelRes.data);
