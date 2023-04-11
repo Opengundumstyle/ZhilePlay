@@ -142,7 +142,7 @@ const Video = () => {
 
   const handlelike = async()=>{
        if(currentUser){
-        await axios.put(`api/users/like/${path}`)
+        await axios.put(`/api/users/like/${path}`)
         dispatch(like(currentUser._id))
        }else{
          navigate('/signin')
@@ -162,8 +162,8 @@ const Video = () => {
       
     if(currentUser){
      currentUser.subscribedUsers.includes(channel._id)?
-     await axios.put(`api/users/unsub/${channel._id}`):
-     await axios.put(`api/users/sub/${channel._id}`)
+     await axios.put(`/api/users/unsub/${channel._id}`):
+     await axios.put(`/api/users/sub/${channel._id}`)
      dispatch(subscription(channel._id))
     }else{
        navigate('/signin')
