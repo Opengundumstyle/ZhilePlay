@@ -176,9 +176,9 @@ const Video = () => {
     console.log("useEffect called");
     const fetchData = async () => {
       try {
-        const videoRes = await axios.get(`api/videos/find/${path}`);
+        const videoRes = await axios.get(`/api/videos/find/${path}`);
         const channelRes = await axios.get(
-          `api/users/find/${videoRes.data.userId}`
+          `/api/users/find/${videoRes.data.userId}`
         );
 
         console.log('do i have videoRes',videoRes)
@@ -199,7 +199,7 @@ const Video = () => {
     const getComments = async()=>{
 
       try{
-          const res = await axios.get(`api/comments/${path}`)
+          const res = await axios.get(`/api/comments/${path}`)
 
           dispatch(fetchComments(res.data))
           
@@ -212,7 +212,8 @@ const Video = () => {
       getComments()
    }
   , 
-  [path, dispatch]
+  // [path, dispatch]
+  []
   
   );
 
