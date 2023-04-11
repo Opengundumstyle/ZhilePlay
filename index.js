@@ -7,17 +7,18 @@ import userRoutes from './routes/users.js'
 import videoRoutes from './routes/videos.js'
 import commentRoutes from './routes/comments.js'
 import cookieParser from 'cookie-parser'
-import * as path from 'path';
+import path from 'path'
 
 const app = express()
 
 dotenv.config()
 
-app.use(express.static('frontend/build'));
-app.get('/', (req, res) => {
-  res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'));
-})
+app.use(express.static('client/build'));
+ 
 
+app.get('/', (req, res) => {
+     res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+   })
 
 const connect= () =>{
      mongoose.connect(process.env.MONGODB_API_KEY).then(()=>{
@@ -43,7 +44,10 @@ app.use((err,req,res,next)=>{
 
 })
 //test nodeman
-app.listen(1314,()=>{
+
+const port = process.env.PORT || 1314; // default port is 3000
+ // default port is 1314
+app.listen(port,()=>{
      connect()
-     console.log('connected to port 1314')
+     console.log(`connected to port ${port}`)
 })
