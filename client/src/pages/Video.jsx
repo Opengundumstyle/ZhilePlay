@@ -142,7 +142,7 @@ const Video = () => {
 
   const handlelike = async()=>{
        if(currentUser){
-        await axios.put(`/users/like/${path}`)
+        await axios.put(`api/users/like/${path}`)
         dispatch(like(currentUser._id))
        }else{
          navigate('/signin')
@@ -151,7 +151,7 @@ const Video = () => {
 
   const handleDislike = async()=>{
       if(currentUser){
-      await axios.put(`/users/dislike/${path}`)
+      await axios.put(`api/users/dislike/${path}`)
       dispatch(dislike(currentUser._id))
       }else{
         navigate('/signin')
@@ -162,8 +162,8 @@ const Video = () => {
       
     if(currentUser){
      currentUser.subscribedUsers.includes(channel._id)?
-     await axios.put(`/users/unsub/${channel._id}`):
-     await axios.put(`/users/sub/${channel._id}`)
+     await axios.put(`api/users/unsub/${channel._id}`):
+     await axios.put(`api/users/sub/${channel._id}`)
      dispatch(subscription(channel._id))
     }else{
        navigate('/signin')
@@ -176,9 +176,9 @@ const Video = () => {
     console.log("useEffect called");
     const fetchData = async () => {
       try {
-        const videoRes = await axios.get(`/videos/find/${path}`);
+        const videoRes = await axios.get(`api/videos/find/${path}`);
         const channelRes = await axios.get(
-          `/users/find/${videoRes.data.userId}`
+          `api/users/find/${videoRes.data.userId}`
         );
 
         console.log('do i have videoRes',videoRes)
@@ -199,7 +199,7 @@ const Video = () => {
     const getComments = async()=>{
 
       try{
-          const res = await axios.get(`/comments/${path}`)
+          const res = await axios.get(`api/comments/${path}`)
 
           dispatch(fetchComments(res.data))
           

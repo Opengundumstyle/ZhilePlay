@@ -41,7 +41,7 @@ const Comments = ({videoId}) => {
         e.preventDefault()
         if(!newComment)return
         try{
-             await axios.post(`/comments`,{desc:newComment,userId:currentUser._id,videoId})
+             await axios.post(`api/comments`,{desc:newComment,userId:currentUser._id,videoId})
              dispatch(addComment({
                            desc:newComment,
                            userId:currentUser._id
