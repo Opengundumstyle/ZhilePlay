@@ -49,6 +49,6 @@
     ]
   },
   
-  "proxy": "https://zhileplay.herokuapp.com//api/"
+  "proxy": "https://zhileplay.herokuapp.com/api/"
 
 }
