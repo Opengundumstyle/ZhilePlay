@@ -7,10 +7,10 @@
   "scripts": {
     "start": "nodemon index.js",
     "server": "nodemon index.js --ignore client",
-    "frontend-install": "npm install --prefix frontend",
+    "frontend-install": "npm install --prefix client",
     "frontend": "npm start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run frontend\"",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix frontend && npm run build --prefix frontend"
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix client && npm run build --prefix client"
   },
   "keywords": [],
   "author": "",

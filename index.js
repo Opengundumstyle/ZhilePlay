@@ -42,7 +42,7 @@ app.use((err,req,res,next)=>{
      })
 
 })
-
+//test nodeman
 app.listen(1314,()=>{
      connect()
      console.log('connected to port 1314')
