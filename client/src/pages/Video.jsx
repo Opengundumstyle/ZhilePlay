@@ -127,6 +127,10 @@ const Video = () => {
   const {currentUser} = useSelector(state=>state.user)
   const {currentVideo} = useSelector(state=>state.video)
 
+  console.log('what is currentVideo',currentVideo)
+
+  const videoId = currentVideo?._id? currentVideo._id : null
+
   const navigate = useNavigate();
 
   const dispatch = useDispatch()
@@ -202,9 +206,11 @@ const Video = () => {
       getComments()
    }
   , 
-  [path, dispatch,currentVideo._id]
+  [path, dispatch,videoId]
   
   );
+
+  
 
   return (
     <Container>
