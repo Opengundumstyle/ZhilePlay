@@ -212,8 +212,8 @@ const Video = () => {
       getComments()
    }
   , 
-  // [path, dispatch]
-  []
+  [path, dispatch]
+ 
   
   );
 

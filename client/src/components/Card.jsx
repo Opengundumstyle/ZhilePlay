@@ -56,6 +56,7 @@ const Card = ({type,video}) => {
 
   const [channel,setChannel]= useState({})
   
+  
   useEffect(()=>{
 
      const fetchChannel= async ()=>{
