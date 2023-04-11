@@ -172,27 +172,36 @@ const Video = () => {
   }
  
   // fetching videos and comments
-  useEffect(() => {
+  useEffect(async () => {
     console.log("useEffect called");
     const fetchData = async () => {
       try {
-        const videoRes = await axios.get(`/api/videos/find/${path}`);
-        const channelRes = await axios.get(
-          `/api/users/find/${videoRes.data.userId}`
-        );
 
-        console.log('do i have videoRes',videoRes)
+        let videoRes;
+        
+        if(currentVideo){
 
-        setChannel(channelRes.data);
+          videoRes = currentVideo
+
+        }else{
+
+          videoRes = await axios.get(`/api/videos/find/${path}`);
+          dispatch(fetchSuccess(videoRes.data));
+  
+        }
+
+     
+        const channelRes = await axios.get( `/api/users/find/${videoRes.data.userId}`);
+         setChannel(channelRes.data);
    
-        dispatch(fetchSuccess(videoRes.data));
 
       } catch (err) {
           console.log('this is the catch err',err)
       }
     };
 
-    fetchData();
+      fetchData();
+   
     
     console.log('fetchData called');
 
