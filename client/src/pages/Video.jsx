@@ -151,7 +151,7 @@ const Video = () => {
 
   const handleDislike = async()=>{
       if(currentUser){
-      await axios.put(`api/users/dislike/${path}`)
+      await axios.put(`/api/users/dislike/${path}`)
       dispatch(dislike(currentUser._id))
       }else{
         navigate('/signin')
