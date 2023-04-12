@@ -16,11 +16,11 @@ dotenv.config()
 
 app.use(express.static('client/build'));
 
-app.get('*', (req, res) => {
-     res.sendFile(path.resolve(__dirname, 'frontend', 'public', 'index.html'));
+app.get('/', (req, res) => {
+     res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
    })
 
-const connect= () =>{
+const connect= () => {
      mongoose.connect(process.env.MONGODB_API_KEY).then(()=>{
            console.log("Connected to DB")}).catch((err)=>{ throw err})
 }
