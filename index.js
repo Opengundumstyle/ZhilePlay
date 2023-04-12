@@ -20,7 +20,7 @@ dotenv.config()
 //    })
  
 
-app.use(express.static(path.join(__dirname, 'client/build')));
+// app.use(express.static(path.join(__dirname, 'client/build')));
 
 const connect= () =>{
      mongoose.connect(process.env.MONGODB_API_KEY).then(()=>{
