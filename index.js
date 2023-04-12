@@ -33,6 +33,11 @@ app.use("/api/users",userRoutes)
 app.use("/api/videos",videoRoutes)
 app.use("/api/comments",commentRoutes)
 
+
+app.get("*", (req, res) => {
+     res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+   });
+
 app.use((err,req,res,next)=>{
      const status = err.status || 500 
      const message = err.message || "something went wrong"
