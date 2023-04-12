@@ -13,12 +13,14 @@ const app = express()
 
 dotenv.config()
 
-app.use(express.static('client/build'));
+// app.use(express.static('client/build'));
 
-app.get('/', (req, res) => {
-     res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
-   })
+// app.get('/', (req, res) => {
+//      res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+//    })
  
+
+app.use(express.static(path.join(__dirname, 'client/build')));
 
 const connect= () =>{
      mongoose.connect(process.env.MONGODB_API_KEY).then(()=>{
@@ -44,6 +46,11 @@ app.use((err,req,res,next)=>{
 
 })
 //test nodeman
+
+
+app.get('*', (req, res) => {
+     res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+   });
 
 const port = process.env.PORT || 1314; // default port is 3000
  // default port is 1314
