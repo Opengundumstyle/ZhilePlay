@@ -35,7 +35,7 @@ app.use("/api/comments",commentRoutes)
 
 
 app.get("*", (req, res) => {
-     res.sendFile(path.join(__dirname, "client", "build", "index.html"));
+     res.sendFile(path.join(process.cwd(), "client", "build", "index.html"));
    });
 
 app.use((err,req,res,next)=>{
