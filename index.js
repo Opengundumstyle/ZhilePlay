@@ -13,13 +13,11 @@ const app = express()
 
 dotenv.config()
 
-
+app.use(express.static('client/build'));
 
 app.get('/', (req, res) => {
      res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
    })
-   
-app.use(express.static('client/build'));
  
 
 const connect= () =>{
@@ -34,9 +32,6 @@ app.use("/api/auth",authRoutes)
 app.use("/api/users",userRoutes)
 app.use("/api/videos",videoRoutes)
 app.use("/api/comments",commentRoutes)
-
-
-
 
 app.use((err,req,res,next)=>{
      const status = err.status || 500 
