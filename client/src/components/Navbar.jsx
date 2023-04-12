@@ -108,7 +108,7 @@ const Navbar = () => {
                <UserUtils>
                 <User>
                     <VideoCallOutlinedIcon onClick={()=>setOpen(true)}/>
-                    <Avatar src={currentUser.img} onClick={()=>setLogOut(!logout)}/>
+                    <Avatar src={currentUser.img?currentUser.img:'https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI='} onClick={()=>setLogOut(!logout)}/>
                     {currentUser.name}
                 </User>
                 {logout?<UserSession/>:''}
