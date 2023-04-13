@@ -7,6 +7,8 @@ import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import Comments from '../components/Comments';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ThumbDownAltIcon from '@mui/icons-material/ThumbDownAlt';
+import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
+
 import Recommendation from '../components/Recommendation';
 import { useSelector } from 'react-redux';
 import { useDispatch } from 'react-redux'
@@ -64,20 +66,17 @@ const Button= styled.div`
 const Hr = styled.hr`
   margin:15px 0;
   border:0.5px solid ${({theme})=>theme.soft};
-
 `
-
-
-
 const Channel = styled.div`
 display:flex;
 justify-content:space-between;
+overflow-x: auto;
 `
 
 const ChannelInfo = styled.div`
    display:flex;
    gap:20px;
-
+   flex:1;
 `
 
 const Subscribtions = styled.button`
@@ -85,10 +84,31 @@ const Subscribtions = styled.button`
     font-weight:500;
     color:white;
     border:none;
-    border-radius:10px;
+    border-radius:5px;
+    height:max-content;
+    padding:15px 25px;
+    cursor:pointer;
+    &:hover{
+       transition:0.3s;
+       background-color:#ED2B2A;
+    }
+`
+const UnSubscribtions = styled.button`
+    background-color:lightgrey;
+    font-weight:500;
+    color:black;
+    border:none;
+    border-radius:16px;
     height:max-content;
     padding:10px 20px;
     cursor:pointer;
+    display:flex;
+    align-items:center;
+    gap:3px;
+    &:hover{
+       background-color:AliceBlue;
+       border:1px solid lightgrey;
+    }
 `
 
 const Img = styled.img`
@@ -134,15 +154,11 @@ const Video = () => {
   
   const path = useLocation().pathname.split('/')[2]
 
-  console.log('what is currentVideoId',currentVideo?._id)
-  console.log('what is path',path)
-  console.log('currentVideo???',currentVideo)
-
   const [channel,setChannel] = useState({})
 
   const handlelike = async()=>{
        if(currentUser){
-        await axios.put(`/api/users/like/${path}`)
+        await axios.put(`/users/like/${path}`)
         dispatch(like(currentUser._id))
        }else{
          navigate('/signin')
@@ -151,7 +167,7 @@ const Video = () => {
 
   const handleDislike = async()=>{
       if(currentUser){
-      await axios.put(`/api/users/dislike/${path}`)
+      await axios.put(`/users/dislike/${path}`)
       dispatch(dislike(currentUser._id))
       }else{
         navigate('/signin')
@@ -162,8 +178,8 @@ const Video = () => {
       
     if(currentUser){
      currentUser.subscribedUsers.includes(channel._id)?
-     await axios.put(`/api/users/unsub/${channel._id}`):
-     await axios.put(`/api/users/sub/${channel._id}`)
+     await axios.put(`/users/unsub/${channel._id}`):
+     await axios.put(`/users/sub/${channel._id}`)
      dispatch(subscription(channel._id))
     }else{
        navigate('/signin')
@@ -177,11 +193,11 @@ const Video = () => {
     const fetchData = async () => {
       try {
         // fetch video info
-        const videoRes = await axios.get(`/api/videos/find/${path}?${Math.random()}`);
+        const videoRes = await axios.get(`/videos/find/${path}?${Math.random()}`);
         dispatch(fetchSuccess(videoRes.data));
 
         // fetch channel info
-        const channelRes = await axios.get(`/api/users/find/${videoRes.data.userId}`);
+        const channelRes = await axios.get(`/users/find/${videoRes.data.userId}`);
         setChannel(channelRes.data);
    
 
@@ -198,7 +214,7 @@ const Video = () => {
     const getComments = async()=>{
 
       try{
-          const res = await axios.get(`/api/comments/${path}`)
+          const res = await axios.get(`/comments/${path}`)
 
           dispatch(fetchComments(res.data))
           
@@ -254,6 +270,7 @@ const Video = () => {
               </Details> 
               <Hr/>
               <Channel>
+
                   <ChannelInfo>
                       <Img src={channel.img}/>
                        <ChannelDetails>
@@ -264,9 +281,11 @@ const Video = () => {
                           </ChannelDescribtion>
                        </ChannelDetails>
                   </ChannelInfo>
-                  <Subscribtions onClick={handleSub}>
-                       {currentUser && currentUser.subscribedUsers?.includes(channel._id)?"SUBSCRIBED":"SUBSCRIBE"}
-                  </Subscribtions>
+                 
+                  {currentUser && currentUser.subscribedUsers?.includes(channel._id)?
+                      <UnSubscribtions onClick={handleSub}><NotificationsNoneOutlinedIcon/>UNSUBSCRIBE</UnSubscribtions>
+                      : <Subscribtions onClick={handleSub}> SUBSCRIBE </Subscribtions>}
+                 
               </Channel>
               <Hr/>
               <Comments videoId={path}/>

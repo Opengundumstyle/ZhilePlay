@@ -41,11 +41,9 @@ const Comments = ({videoId}) => {
         e.preventDefault()
         if(!newComment)return
         try{
-             await axios.post(`/api/comments`,{desc:newComment,userId:currentUser._id,videoId})
-             dispatch(addComment({
-                           desc:newComment,
-                           userId:currentUser._id
-                             }))
+            let res =  await axios.post(`/comments`,{desc:newComment,userId:currentUser._id,videoId})
+             console.log('what is res',res)
+             dispatch(addComment(res.data))
              setNewComment('')
              
         }catch(err){
@@ -55,16 +53,21 @@ const Comments = ({videoId}) => {
 
   return (
   <Container>
-      <NewComment onSubmit={handleSubmit}>
+
+       <NewComment onSubmit={handleSubmit}>
 
         {currentUser?
-         <Avatar src={currentUser.img}/>:<AccountCircleIcon sx={{ fontSize: 55}} color="disabled"/>}
+         <Avatar src={currentUser.img?currentUser.img:
+          'https://www.tenforums.com/attachments/user-accounts-family-safety/322690d1615743307t-user-account-image-log-user.png'}/>
+         :<AccountCircleIcon sx={{ fontSize: 55}} color="disabled"/>
+         }
+
         {currentUser?  <Input placeholder='Add a comment...' value={newComment} onChange={(e)=>setNewComment(e.target.value)}/>: <Input placeholder='sign in to add comment'/>}
       
       </NewComment>
        
        {currentComments ? currentComments.map(comment=>(
-         <Comment key={comment._id} comment={comment}/>
+         <Comment key={comment._id} comment={comment} />
        )):""}
        
   </Container>

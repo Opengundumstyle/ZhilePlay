@@ -67,6 +67,8 @@ const User= styled.div`
    gap:10px;
    font-weight:500;
    color:${({theme})=>theme.text};
+   cursor:pointer;
+
 `
 
 const Avatar = styled.img`
@@ -107,7 +109,7 @@ const Navbar = () => {
                <>
                <UserUtils>
                 <User>
-                    <VideoCallOutlinedIcon onClick={()=>setOpen(true)}/>
+                    <VideoCallOutlinedIcon onClick={()=>setOpen(true)} sx={{ fontSize: 35 }}/>
                     <Avatar src={currentUser.img?currentUser.img:'https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI='} onClick={()=>setLogOut(!logout)}/>
                     {currentUser.name}
                 </User>

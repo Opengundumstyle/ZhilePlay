@@ -53,10 +53,18 @@ export const videoSlice = createSlice({
      const newComment = action.payload;
      state.currentComments = [newComment,...state.currentComments]
    },
+   editComment:(state,action)=>{
+      const index = state.currentComments.indexOf(action.payload._id)
+      state.currentComments[index] = action.payload
+   },
+   deleteComment:(state,action)=>{
+         const newComments =  state.currentComments.filter(comment => comment._id !== action.payload)
+         state.currentComments = newComments
+   }
   },
 });
 
-export const { fetchStart, fetchSuccess, fetchFailure,like,dislike,fetchComments,addComment} =
+export const { fetchStart, fetchSuccess, fetchFailure,like,dislike,fetchComments,addComment,editComment,deleteComment} =
   videoSlice.actions;
 
 export default videoSlice.reducer;
