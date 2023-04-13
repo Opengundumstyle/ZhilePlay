@@ -59,7 +59,7 @@ const Item = styled.div`
 `
 const Hr = styled.hr`
     margin:15px 0px;
-    border:0.5px solid ${({theme})=>theme.soft};
+    border:0.7px solid ${({theme})=>theme.soft};
 `
 
 const Login = styled.div``
@@ -110,7 +110,7 @@ const Menu = ({darkMode,setDarkMode}) => {
         <Link to="subscriptions" style={{textDecoration:'none',color:"inherit"}}>
              <Item>
               <SubscriptionsRoundedIcon/>
-              Subscribtions
+              Subscriptions
              </Item>
          </Link>
           <Hr/>

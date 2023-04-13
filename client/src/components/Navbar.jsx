@@ -9,7 +9,8 @@ import VideoCallOutlinedIcon from '@mui/icons-material/VideoCallOutlined';
 import { useState } from 'react';
 import Upload from './Upload';
 import UserSession from './UserSession';
-import { useDetectOutsideClick } from '../utils/useDetectOutsideClick'
+import { darkTheme,lightTheme } from '../utils/Theme';
+// import { useDetectOutsideClick } from '../utils/useDetectOutsideClick'
 
 const Container = styled.div`
     position:sticky;
@@ -60,6 +61,11 @@ const Button = styled.button`
    display:flex;
    align-items:center;
    gap:5px;
+   &:hover{
+      background-color:white;
+      transition: 0.7s;
+      color: #58b2ff;
+   }
    `
 const User= styled.div`
    display:flex;
@@ -84,6 +90,42 @@ const UserUtils = styled.div`
     flex-direction:column;
     align-items:center;
     `
+const Section = styled.div`
+     display:flex;
+     align-items:center;
+     gap:5px;
+     position: relative;`
+
+
+const Menu = styled.div`
+    background: ${({theme})=>theme.bg};
+    border-radius: 5px;
+    padding:12px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    transform: translateY(-20px);
+    transition: transform 0.4s, visibility 0.4s;
+    z-index:8;
+    margin-left: -100px;
+    font-family: 'Open Sans';
+    font-size: 14px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:3px;
+    position: absolute;
+    right:0;
+
+    opacity: ${props => props.logout?"1":"0"};
+    visibility:${props => props.logout?"visible":"hidden"};
+    transform: translateY(0);`
+
+const Main = styled.div`
+      position: relative;`
+
+
+const SearchIcon = styled(SearchOutlinedIcon)`
+    cursor:pointer;
+ `
 
 const Navbar = () => {
   const navigate  = useNavigate()
@@ -91,7 +133,7 @@ const Navbar = () => {
   const [open,setOpen] = useState(false)
   const [logout,setLogOut] = useState(false)
   const [q,setQ] = useState("") 
-  
+  const [darkMode,setDarkMode] = useState(false)
   
   
   return (
@@ -103,17 +145,25 @@ const Navbar = () => {
                      if(!q) return
                      navigate(`/search?q=${q}`)}}>
                  <Input placeholder='Search' onChange={(e)=>setQ(e.target.value)}/>
-                 <SearchOutlinedIcon onClick={()=>navigate(`/search?q=${q}`)}/>
+                 <SearchIcon onClick={()=>navigate(`/search?q=${q}`)}/>
               </Search>
             { currentUser ? 
                <>
                <UserUtils>
                 <User>
                     <VideoCallOutlinedIcon onClick={()=>setOpen(true)} sx={{ fontSize: 35 }}/>
-                    <Avatar src={currentUser.img?currentUser.img:'https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI='} onClick={()=>setLogOut(!logout)}/>
-                    {currentUser.name}
+                      <Main>
+                        <Section onClick={()=>setLogOut(!logout)}>
+                            <Avatar src={currentUser.img?currentUser.img:'https://media.istockphoto.com/id/1337144146/vector/default-avatar-profile-icon-vector.jpg?s=612x612&w=0&k=20&c=BIbFwuv7FxTWvh5S3vB6bkT0Qv8Vn8N5Ffseq84ClGI='} />
+                            {currentUser.name}
+                        </Section>
+                        <Menu logout={logout}>
+                            <UserSession darkMode={darkMode} setDarkMode={setDarkMode} />
+                        </Menu>
+                      </Main>
+
                 </User>
-                {logout?<UserSession/>:''}
+                
                 </UserUtils>
                 </> 
                 : 
