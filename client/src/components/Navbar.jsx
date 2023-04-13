@@ -9,7 +9,7 @@ import VideoCallOutlinedIcon from '@mui/icons-material/VideoCallOutlined';
 import { useState } from 'react';
 import Upload from './Upload';
 import UserSession from './UserSession';
-import { darkTheme,lightTheme } from '../utils/Theme';
+
 // import { useDetectOutsideClick } from '../utils/useDetectOutsideClick'
 
 const Container = styled.div`
@@ -47,6 +47,7 @@ const Input = styled.input`
     outline:none;
     background-color:transparent;
     flex:1;
+    color:${({theme})=>theme.text};
 `
 
 const Button = styled.button`
@@ -127,13 +128,13 @@ const SearchIcon = styled(SearchOutlinedIcon)`
     cursor:pointer;
  `
 
-const Navbar = () => {
+const Navbar = ({darkMode,setDarkMode}) => {
   const navigate  = useNavigate()
   const {currentUser} = useSelector(state=>state.user)
   const [open,setOpen] = useState(false)
-  const [logout,setLogOut] = useState(false)
+  const [logout,setLogOut] = useState()
   const [q,setQ] = useState("") 
-  const [darkMode,setDarkMode] = useState(false)
+ 
   
   
   return (

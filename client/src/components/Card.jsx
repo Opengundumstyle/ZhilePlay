@@ -10,7 +10,9 @@ const Container = styled.div`
   margin-bottom:${(props)=>props.type === 'sm'? "10px":"45px"};
   cursor:pointer;
   display:${(props)=>props.type === 'sm' && "flex"};
-  gap:10px;`
+  gap:5px;
+  
+   `
 
 
 const Image = styled.img`
@@ -18,12 +20,14 @@ const Image = styled.img`
    height:${(props)=>props.type === 'sm'? "115px":"202px"};
    background-color:#999;
    flex:1;
+  
 `
 const Details = styled.div`
    display:flex;
    margin-top:${(props)=>props.type !== 'sm' && "16px"};
-   gap:12px;
-   flex:1;
+   height:${(props)=>props.type === 'sm'? "115px":"100px"};
+   gap:${(props)=>props.type === 'sm'? "0px":"5px"};
+   flex:1
 `
 const ChannelImage = styled.img`
    width:36px;
@@ -34,22 +38,22 @@ const ChannelImage = styled.img`
 `
 
 const Texts = styled.div`
-  
+  overflow:${(props)=>props.type === 'sm' && "hidden"};
 `
 const Title = styled.div`
-   font-size:16x;
+   font-size:${(props)=>props.type === 'sm'? "14px":"16px"};
    font-weight:500;
-   color:${({theme})=>theme.text}
+   color:${({theme})=>theme.text};
 `
 const ChannelName= styled.div`
-  font-size:14px;
+  font-size:${(props)=>props.type === 'sm'? "12px":"14px"};
   color:${({theme})=>theme.textSoft};
   margin:9px 0px;
 
 `
 
 const Info = styled.div`
-  font-size:14px;
+  font-size:${(props)=>props.type === 'sm'? "12px":"14px"};
   color:${({theme})=>theme.textSoft};
 `
 const Card = ({type,video}) => {
@@ -60,7 +64,7 @@ const Card = ({type,video}) => {
   useEffect(()=>{
 
      const fetchChannel= async ()=>{
-           const res = await axios.get(`/users/find/${video.userId}`)
+           const res = await axios.get(`/api/users/find/${video.userId}`)
            setChannel(res.data)
       }
       fetchChannel()
@@ -73,10 +77,10 @@ const Card = ({type,video}) => {
         <Image type={type} src={video.imgUrl}/>
         <Details type={type}>
             <ChannelImage type={type} src={channel?.img}/>
-            <Texts>
-                <Title>{video.title}</Title>
-                <ChannelName>{channel?.name}</ChannelName>
-                <Info>{video.views} views . {format(video.createdAt)}</Info>
+            <Texts type={type}>
+                <Title type={type}>{video.title}</Title>
+                <ChannelName type={type}>{channel?.name}</ChannelName>
+                <Info type={type}>{video.views} views . {format(video.createdAt)}</Info>
             </Texts>
         </Details>
     </Container>

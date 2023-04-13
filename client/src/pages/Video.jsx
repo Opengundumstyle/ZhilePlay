@@ -19,30 +19,33 @@ import axios from 'axios';
 import { format } from 'timeago.js';
 
 
+
 const Container = styled.div`
       display:flex;
       gap:24px;
+      padding:15px 30px;
       `
 
 const Content = styled.div`
-    flex:5;`
+      flex:5;`
 
 const VideoWrapper = styled.div`
-    `
+      /* Add your custom CSS styles for the video here */
+      padding: 0;
+    `;
 
 const Title = styled.h1`
-   font-size:18px;
-   font-weight:400;
-   margin-top:20px;
-   margin-bottom:10px;
-   color:${({theme})=>theme.text};
+    font-size:18px;
+    font-weight:400;
+    margin-top:20px;
+    margin-bottom:10px;
+    color:${({theme})=>theme.text};
     `
 
 const Details = styled.div`
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
     `
 
 const Info = styled.span`
@@ -50,28 +53,28 @@ const Info = styled.span`
     `
 
 const Buttons= styled.div`
-  display:flex;
-  gap:20px;
-  color:${({theme})=>theme.text};
+    display:flex;
+    gap:20px;
+    color:${({theme})=>theme.text};
 
     `
 
 const Button= styled.div`
-  display:flex;
-  align-items:center;
-  gap:5px;
-  cursor:pointer;
-    `
+    display:flex;
+    align-items:center;
+    gap:5px;
+    cursor:pointer;
+      `
 
 const Hr = styled.hr`
-  margin:15px 0;
-  border:0.5px solid ${({theme})=>theme.soft};
-`
+      margin:15px 0;
+      border:0.5px solid ${({theme})=>theme.soft};
+    `
 const Channel = styled.div`
-display:flex;
-justify-content:space-between;
-overflow-x: auto;
-`
+    display:flex;
+    justify-content:space-between;
+    overflow-x: auto;
+    `
 
 const ChannelInfo = styled.div`
    display:flex;
@@ -108,7 +111,7 @@ const UnSubscribtions = styled.button`
     &:hover{
        background-color:AliceBlue;
        border:1px solid lightgrey;
-    }
+    };
 `
 
 const Img = styled.img`
@@ -127,14 +130,14 @@ const ChannelName = styled.span`
   `
 
 const ChannelCounter = styled.span`
-  margin-top:5px;
-  margin-bottom:20px;
-  color:${({theme})=>theme.textSoft};
-  font-size:12px;
+    margin-top:5px;
+    margin-bottom:20px;
+    color:${({theme})=>theme.textSoft};
+    font-size:12px;
   `
 
 const ChannelDescribtion = styled.p`
-  font-size:14px;
+   font-size:14px;
   `
 
 const VideoFrame = styled.video`
@@ -158,7 +161,7 @@ const Video = () => {
 
   const handlelike = async()=>{
        if(currentUser){
-        await axios.put(`/users/like/${path}`)
+        await axios.put(`/api/users/like/${path}`)
         dispatch(like(currentUser._id))
        }else{
          navigate('/signin')
@@ -167,7 +170,7 @@ const Video = () => {
 
   const handleDislike = async()=>{
       if(currentUser){
-      await axios.put(`/users/dislike/${path}`)
+      await axios.put(`/api/users/dislike/${path}`)
       dispatch(dislike(currentUser._id))
       }else{
         navigate('/signin')
@@ -178,8 +181,8 @@ const Video = () => {
       
     if(currentUser){
      currentUser.subscribedUsers.includes(channel._id)?
-     await axios.put(`/users/unsub/${channel._id}`):
-     await axios.put(`/users/sub/${channel._id}`)
+     await axios.put(`/api/users/unsub/${channel._id}`):
+     await axios.put(`/api/users/sub/${channel._id}`)
      dispatch(subscription(channel._id))
     }else{
        navigate('/signin')
@@ -193,11 +196,11 @@ const Video = () => {
     const fetchData = async () => {
       try {
         // fetch video info
-        const videoRes = await axios.get(`/videos/find/${path}?${Math.random()}`);
+        const videoRes = await axios.get(`/api/videos/find/${path}?${Math.random()}`);
         dispatch(fetchSuccess(videoRes.data));
 
         // fetch channel info
-        const channelRes = await axios.get(`/users/find/${videoRes.data.userId}`);
+        const channelRes = await axios.get(`/api/users/find/${videoRes.data.userId}`);
         setChannel(channelRes.data);
    
 
@@ -214,7 +217,7 @@ const Video = () => {
     const getComments = async()=>{
 
       try{
-          const res = await axios.get(`/comments/${path}`)
+          const res = await axios.get(`/api/comments/${path}`)
 
           dispatch(fetchComments(res.data))
           

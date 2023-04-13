@@ -7,6 +7,7 @@ const Container = styled.div`
     display:flex;
     justify-content:space-between;
     flex-wrap:wrap;
+    padding:14px 96px;
     `
 
 const Home = ({type}) => {
@@ -15,7 +16,7 @@ const Home = ({type}) => {
   
   useEffect(()=>{
      const fetchVideos= async ()=>{
-           const res = await axios.get(`/videos/${type}`)
+           const res = await axios.get(`/api/videos/${type}`)
            setVideos(res.data)
       }
       fetchVideos()

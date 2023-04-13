@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux'
 import PortraitOutlinedIcon from '@mui/icons-material/PortraitOutlined';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import Brightness2OutlinedIcon from '@mui/icons-material/Brightness2Outlined';
+import WbSunnyOutlinedIcon from '@mui/icons-material/WbSunnyOutlined';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import HelpIcon from '@mui/icons-material/Help';
 import FeedbackOutlinedIcon from '@mui/icons-material/FeedbackOutlined';
@@ -18,7 +19,7 @@ const Container = styled.div`
 
 const Box = styled.div`
         padding:5px 15px;
-        width:97%;
+        width:96%;
         font-weight:300;
         cursor:pointer;
         display:flex;
@@ -26,12 +27,13 @@ const Box = styled.div`
         gap:9px;
 
         &:hover{
-          background-color:rgba(0,0,0,0.1);
+          background-color:${({theme})=>theme.soft};
+
         }`
 
   const Box2 = styled.a`
   text-decoration:none;
-  color:black;
+  color:${({theme})=>theme.text};
   padding:5px 15px;
   width:97%;
   font-weight:300;
@@ -41,7 +43,8 @@ const Box = styled.div`
   gap:9px;
 
   &:hover{
-    background-color:rgba(0,0,0,0.1);
+    background-color:${({theme})=>theme.soft};
+
   }`
 
 
@@ -55,6 +58,7 @@ const Line = styled.div`
     
 
 const UserSession = ({darkMode,setDarkMode}) => {
+
 
   const dispatch = useDispatch()
 
@@ -81,9 +85,12 @@ const UserSession = ({darkMode,setDarkMode}) => {
 
           <Line/>
           
-           <Box onClick ={()=> setDarkMode(!darkMode)} >
-              <Brightness2OutlinedIcon/>
-              Appearance                           
+           <Box onClick ={()=> setDarkMode(!darkMode)}>
+
+              {darkMode?<Brightness2OutlinedIcon/>:<WbSunnyOutlinedIcon/>}
+              {darkMode?'Dark ':'Light '}
+              Appearance     
+
            </Box>
          
            <Box2 href="https://github.com/Opengundumstyle" target="_blank">

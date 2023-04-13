@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import DeleteForeverOutlinedIcon from '@mui/icons-material/DeleteForeverOutlined';
 import { deleteComment,editComment} from '../redux/videoSlice';
+import { format } from 'timeago.js';
 
 const Container = styled.div`
    display:flex;
@@ -148,12 +149,12 @@ const Menu = styled.div`
            `
 
      const EditSection = styled.div`
-        gap:3px;
-        display:flex;
-        flex-direction:row;
-        justify-content:flex-end;
-        font-size:14px;
-        font-weight:500;`
+          gap:3px;
+          display:flex;
+          flex-direction:row;
+          justify-content:flex-end;
+          font-size:14px;
+          font-weight:500;`
 
 
 const Comment = ({comment}) => {
@@ -173,7 +174,7 @@ const Comment = ({comment}) => {
   
        const fetchComment = async()=>{
         const res = await axios.get(
-          `/users/find/${comment.userId}`
+          `/api/users/find/${comment.userId}`
         )
         setChannel(res.data)
        }
@@ -193,7 +194,7 @@ const handleDelete = async()=>{
 
 
     try{
-         await axios.delete(`/comments/delete/${commentId}`)
+         await axios.delete(`/api/comments/delete/${commentId}`)
          dispatch(deleteComment(commentId))
          
     }catch(err){
@@ -204,7 +205,7 @@ const handleDelete = async()=>{
 const saveComment = async() =>{
        
        try{ 
-           const res  =  await axios.put(`/comments/edit/${commentId}`,{desc:commentText})
+           const res  =  await axios.put(`/api/comments/edit/${commentId}`,{desc:commentText})
            dispatch(editComment(res.data))
            setIsEditing(false)
         }catch(err){
@@ -219,7 +220,7 @@ const saveComment = async() =>{
     <Container>
         <Avatar src={channel.img?channel.img:'https://www.tenforums.com/attachments/user-accounts-family-safety/322690d1615743307t-user-account-image-log-user.png'}/>
         <Details>
-            <Name>{channel.name}<Date>1 day</Date></Name>
+            <Name>{channel.name}<Date>{format(comment.createdAt)}</Date></Name>
          
             {isEditing ? ( // if we're in edit mode, show a textarea for editing the comment
                

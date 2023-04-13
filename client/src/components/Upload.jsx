@@ -8,13 +8,14 @@ import { useNavigate } from 'react-router-dom';
 const Container = styled.div`
   width:100%;
   height:100%;
-  position:absolute;
+  position:fixed;
   top:0;
   left:0;
   background-color:#000000a7;
   display:flex;
   align-items:center;
   justify-content:center;
+  z-index: 9999;
   `
 
 const Wrapper = styled.div`
@@ -47,6 +48,7 @@ const Input = styled.input`
   border-radius:3px;
   padding:10px;
   background-color:transparent;
+
 `
 
 const Desc = styled.textarea`
@@ -65,6 +67,13 @@ const Button = styled.button`
   cursor:pointer;
   bakground-color:${({theme})=>theme.soft};
   color:${({theme})=>theme.textSoft};
+  cursor:pointer;
+  &:hover{
+    background:#076aed;
+    color:white;
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.3);
+    transition:  0.4s ease;
+  }
 `
 
 const Label = styled.label`
@@ -139,7 +148,7 @@ uploadTask.on(
 
 const handleUpload = async (e)=>{
    e.preventDefault();
-   const res  = await axios.post("/videos",{ ...inputs,tags })
+   const res  = await axios.post("/api/videos",{ ...inputs,tags })
    setOpen(false)
    res.status === 200 && navigate(`/video/${res.data._id}`)
 }

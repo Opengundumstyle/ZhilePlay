@@ -25,8 +25,8 @@ const Main = styled.div`
    background-color:${({theme})=>theme.bgLighter};`
 
 const Wrapper = styled.div`
-  padding:22px 96px;`
-
+   //   padding:14px 96px;
+  `
 
 function App() {
   
@@ -38,7 +38,7 @@ function App() {
          <BrowserRouter>
          <Menu darkMode={darkMode} setDarkMode={setDarkMode}/>
          <Main>
-            <Navbar/>
+            <Navbar darkMode={darkMode} setDarkMode={setDarkMode}/>
             <Wrapper>
                <Routes>
                    <Route path="/">
