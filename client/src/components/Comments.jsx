@@ -42,7 +42,7 @@ const Comments = ({videoId}) => {
         e.preventDefault()
         if(!newComment)return
         try{
-            let res =  await axios.post(`/api/comments`,{desc:newComment,userId:currentUser._id,videoId})
+            let res =  await axios.post(`/comments`,{desc:newComment,userId:currentUser._id,videoId})
              console.log('what is res',res)
              dispatch(addComment(res.data))
              setNewComment('')

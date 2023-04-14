@@ -161,7 +161,7 @@ const Video = () => {
 
   const handlelike = async()=>{
        if(currentUser){
-        await axios.put(`/api/users/like/${path}`)
+        await axios.put(`/users/like/${path}`)
         dispatch(like(currentUser._id))
        }else{
          navigate('/signin')
@@ -170,7 +170,7 @@ const Video = () => {
 
   const handleDislike = async()=>{
       if(currentUser){
-      await axios.put(`/api/users/dislike/${path}`)
+      await axios.put(`/users/dislike/${path}`)
       dispatch(dislike(currentUser._id))
       }else{
         navigate('/signin')
@@ -181,8 +181,8 @@ const Video = () => {
       
     if(currentUser){
      currentUser.subscribedUsers.includes(channel._id)?
-     await axios.put(`/api/users/unsub/${channel._id}`):
-     await axios.put(`/api/users/sub/${channel._id}`)
+     await axios.put(`/users/unsub/${channel._id}`):
+     await axios.put(`/users/sub/${channel._id}`)
      dispatch(subscription(channel._id))
     }else{
        navigate('/signin')
@@ -196,11 +196,11 @@ const Video = () => {
     const fetchData = async () => {
       try {
         // fetch video info
-        const videoRes = await axios.get(`/api/videos/find/${path}?${Math.random()}`);
+        const videoRes = await axios.get(`/videos/find/${path}?${Math.random()}`);
         dispatch(fetchSuccess(videoRes.data));
 
         // fetch channel info
-        const channelRes = await axios.get(`/api/users/find/${videoRes.data.userId}`);
+        const channelRes = await axios.get(`/users/find/${videoRes.data.userId}`);
         setChannel(channelRes.data);
    
 
@@ -217,7 +217,7 @@ const Video = () => {
     const getComments = async()=>{
 
       try{
-          const res = await axios.get(`/api/comments/${path}`)
+          const res = await axios.get(`/comments/${path}`)
 
           dispatch(fetchComments(res.data))
           

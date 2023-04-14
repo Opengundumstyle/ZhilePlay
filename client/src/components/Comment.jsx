@@ -174,7 +174,7 @@ const Comment = ({comment}) => {
   
        const fetchComment = async()=>{
         const res = await axios.get(
-          `/api/users/find/${comment.userId}`
+          `/users/find/${comment.userId}`
         )
         setChannel(res.data)
        }
@@ -194,7 +194,7 @@ const handleDelete = async()=>{
 
 
     try{
-         await axios.delete(`/api/comments/delete/${commentId}`)
+         await axios.delete(`/comments/delete/${commentId}`)
          dispatch(deleteComment(commentId))
          
     }catch(err){
@@ -205,7 +205,7 @@ const handleDelete = async()=>{
 const saveComment = async() =>{
        
        try{ 
-           const res  =  await axios.put(`/api/comments/edit/${commentId}`,{desc:commentText})
+           const res  =  await axios.put(`/comments/edit/${commentId}`,{desc:commentText})
            dispatch(editComment(res.data))
            setIsEditing(false)
         }catch(err){

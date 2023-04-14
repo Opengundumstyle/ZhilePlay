@@ -21,18 +21,18 @@ import { useSelector } from 'react-redux';
 
 
 const Container = styled.div`
-  flex:1;
+  flex:1.1;
   background-color:${({theme})=>theme.bg};
   height:100vh;
   color:${({theme})=>theme.text};
-  font-size:14px;
+  font-size:16px;
   position:sticky;
   top:0;
   overflow: scroll;
   `
 
 const Wrapper = styled.div`
-  padding:18px 26px;`
+    padding:18px 26px;`
 
 const Logo = styled.div`
      display:flex;
@@ -52,7 +52,7 @@ const Item = styled.div`
     gap:20px;
     cursor:pointer;
     padding:5px 2px;
-    font-size:12px;
+    font-size:13px;
     &:hover {
       background-color: ${({theme})=>theme.soft};
     }
