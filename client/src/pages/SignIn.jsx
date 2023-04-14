@@ -103,7 +103,7 @@ const SignIn = () => {
 
      signInWithPopup(auth,provider).then((result)=>{
               
-              axios.post("/auth/google",{
+              axios.post("/api/auth/google",{
 
               name:result.user.displayName,
               email:result.user.email,
