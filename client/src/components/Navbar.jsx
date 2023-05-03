@@ -135,8 +135,6 @@ const Navbar = ({darkMode,setDarkMode}) => {
   const [logout,setLogOut] = useState()
   const [q,setQ] = useState("") 
  
-  
-  
   return (
     <>
       <Container>

@@ -53,8 +53,8 @@ export const deleteVideo = async (req,res,next)=>{
 export const getVideo = async (req,res,next)=>{
     console.log('what is req',req.params.id)
     try{
-       const video = await Video.findById(req.params.id)
-
+       const video = await Video.findByIdAndUpdate(req.params.id,{ $inc: { views: 1 } })
+       
        res.status(200).json(video)
     }catch(err){
           next(err)

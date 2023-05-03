@@ -190,49 +190,87 @@ const Video = () => {
 
   }
  
-  // fetching videos and comments
+  // // fetching videos and comments
+  // useEffect(() => {
+  //   console.log("useEffect called");
+  //   const fetchData = async () => {
+  //     try {
+  //       // fetch video info
+  //       const videoRes = await axios.get(`/videos/find/${path}?${Math.random()}`);
+  //       dispatch(fetchSuccess(videoRes.data));
+
+  //       // fetch channel info
+  //       const channelRes = await axios.get(`/users/find/${videoRes.data.userId}`);
+  //       setChannel(channelRes.data);
+   
+
+  //     } catch (err) {
+  //         console.log('this is the catch err',err)
+  //     }
+  //   };
+
+  //     fetchData();
+   
+    
+  //   console.log('fetchData called');
+
+  //   const getComments = async()=>{
+
+  //     try{
+  //         const res = await axios.get(`/comments/${path}`)
+
+  //         dispatch(fetchComments(res.data))
+          
+  //     }catch(err){
+
+  //         console.log(err)
+
+  //       }
+  //     }
+  //     getComments()
+  //  }
+  // , 
+  // [path, dispatch]
+  
+  // );
+
   useEffect(() => {
-    console.log("useEffect called");
+    console.log("fetchData useEffect called");
     const fetchData = async () => {
       try {
         // fetch video info
         const videoRes = await axios.get(`/videos/find/${path}?${Math.random()}`);
         dispatch(fetchSuccess(videoRes.data));
-
+  
         // fetch channel info
         const channelRes = await axios.get(`/users/find/${videoRes.data.userId}`);
         setChannel(channelRes.data);
-   
-
       } catch (err) {
-          console.log('this is the catch err',err)
+        console.log('this is the catch err', err);
       }
     };
-
-      fetchData();
-   
-    
-    console.log('fetchData called');
-
-    const getComments = async()=>{
-
-      try{
-          const res = await axios.get(`/comments/${path}`)
-
-          dispatch(fetchComments(res.data))
-          
-      }catch(err){
-
-          console.log(err)
-
-        }
-      }
-      getComments()
-   }
-  , 
-  [path, dispatch]
   
-  );
+    fetchData();
+  
+    console.log('fetchData called');
+  }, [path, dispatch]);
+  
+  
+  useEffect(() => {
+    console.log("getComments useEffect called");
+    const getComments = async () => {
+      try {
+        const res = await axios.get(`/comments/${path}`);
+        dispatch(fetchComments(res.data));
+      } catch (err) {
+        console.log(err);
+      }
+    };
+  
+    getComments();
+  
+    console.log('getComments called');
+  }, [path, dispatch]);
 
   
 
